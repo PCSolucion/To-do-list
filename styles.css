@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap');
+
+:root {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 9%;
+    --primary: 196 100% 50%;
+    --secondary: 0 0% 13%;
+    --accent: 196 100% 50%;
+    --border: 0 0% 15%;
+    --radius: 0.25rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+html.dark {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    min-height: 100vh;
+    background: linear-gradient(135deg, 
+        hsl(0 0% 7%) 0%,
+        hsl(220 20% 12%) 100%
+    );
+}
+
+body {
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: hsl(var(--foreground));
+    margin-bottom: 1.25rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+h1::before, h1::after {
+    content: '';
+    height: 3px;
+    flex: 1;
+    max-width: 200px;
+    background: linear-gradient(90deg, 
+        transparent,
+        hsl(var(--primary)),
+        transparent
+    );
+}
+
+.todo-container {
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 1px solid hsl(var(--border));
+    overflow: hidden;
+    position: relative;
+}
+
+.todo-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg,
+        hsl(196 100% 50%),
+        hsl(220 100% 50%)
+    );
+}
+
+#todo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.task-item {
+    display: grid;
+    grid-template-columns: 50px 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: hsl(var(--secondary));
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid hsla(var(--primary) / 0.1);
+}
+
+.task-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(to bottom,
+        hsl(196 100% 50%),
+        hsl(220 100% 50%)
+    );
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.task-item:hover::before {
+    opacity: 1;
+}
+
+.task-item:hover {
+    background: hsl(220 20% 15%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.task-number {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: hsl(var(--primary));
+    text-align: center;
+    padding: 0.15rem;
+    border-radius: var(--radius);
+    background: hsla(var(--primary) / 0.1);
+    min-width: 50px;
+    border: 1px solid hsla(var(--primary) / 0.2);
+}
+
+.task {
+    font-size: 1.1rem;
+    color: hsl(var(--foreground));
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.02em;
+}
+
+.actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.2s ease;
+}
+
+.task-item:hover .actions {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    width: 28px;
+    border: none;
+    background: hsla(var(--primary) / 0.1);
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: var(--radius);
+}
+
+button:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--background));
+    transform: scale(1.1);
+}
+
+.complete-btn {
+    color: hsl(144, 100%, 50%);
+    border: 1px solid hsla(144, 100%, 50%, 0.2);
+}
+
+.complete-btn:hover {
+    background: hsl(144, 100%, 50%);
+    border-color: transparent;
+}
+
+.delete-btn {
+    color: hsl(0, 100%, 65%);
+    border: 1px solid hsla(0, 100%, 65%, 0.2);
+}
+
+.delete-btn:hover {
+    background: hsl(0, 100%, 65%);
+    border-color: transparent;
+}
+
+li.completed {
+    opacity: 0.6;
+}
+
+li.completed .task {
+    text-decoration: line-through;
+}
+
+li.completed .task-number {
+    background: hsla(0, 0%, 50%, 0.1);
+    color: hsl(0, 0%, 50%);
+    border-color: transparent;
+}
+
+.add-task-container {
+    margin-top: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem;
+    background: hsl(var(--secondary));
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+}
+
+.new-task-input {
+    background: hsla(var(--primary) / 0.1);
+    border: 1px solid hsla(var(--primary) / 0.2);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+    color: hsl(var(--foreground));
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.new-task-input:focus {
+    outline: none;
+    background: hsla(var(--primary) / 0.15);
+    border-color: hsl(var(--primary));
+}
+
+.new-task-input::placeholder {
+    color: hsla(var(--foreground) / 0.5);
+}
+
+.add-task-btn {
+    background: linear-gradient(135deg,
+        hsl(196 100% 50%),
+        hsl(220 100% 50%)
+    );
+    color: hsl(var(--foreground));
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    border-radius: var(--radius);
+}
+
+.add-task-btn:hover {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.task-item {
+    animation: slideIn 0.3s ease forwards;
+}
+
+@media (max-width: 900px) {
+    #todo-list {
+        max-width: 100%;
+    }
+    
+    body {
+        padding: 0.75rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .todo-container {
+        padding: 0.75rem;
+    }
+    
+    .task {
+        font-size: 1rem;
+    }
+    
+    .task-number {
+        font-size: 1.15rem;
+        min-width: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0.5rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .task {
+        font-size: 0.85rem;
+    }
+    
+    button {
+        height: 24px;
+        width: 24px;
+    }
+    
+    .add-task-btn {
+        width: 36px;
+        height: 36px;
+    }
+} 
