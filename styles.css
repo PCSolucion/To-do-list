@@ -340,4 +340,29 @@ li.completed .task-number {
         width: 36px;
         height: 36px;
     }
+}
+
+.menu-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.menu-btn {
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--primary));
+    border-radius: var(--radius);
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.menu-btn.active, .menu-btn:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--background));
+    transform: scale(1.05);
 } 

@@ -9,10 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="menu-selector">
+        <button id="btn-got" class="menu-btn active">GoT Kingsroad</button>
+        <button id="btn-gta" class="menu-btn">GTA 5 Online</button>
+    </div>
     <div class="container">
-        <h1>GoT Kingsroad -  Tareas diarias</h1>
-        <div class="todo-container">
-            <ul id="todo-list">
+        <h1 id="title-got">GoT Kingsroad -  Tareas diarias</h1>
+        <h1 id="title-gta" style="display:none;">GTA 5 Online -  Tareas diarias</h1>
+        <div class="todo-container" id="container-got">
+            <ul id="todo-list-got">
                 <li class="task-item">
                     <span class="task-number">01</span>
                     <span class="task">Comprar materiales a Herrero y Joyero</span>
@@ -159,7 +164,18 @@
                 </li>
             </ul>
             <div class="add-task-container">
-                <input type="text" id="new-task" placeholder="+ Añadir nueva tarea" class="new-task-input">
+                <input type="text" id="new-task-got" placeholder="+ Añadir nueva tarea" class="new-task-input">
+                <button class="add-task-btn" aria-label="Añadir tarea">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="todo-container" id="container-gta" style="display:none;">
+            <ul id="todo-list-gta">
+                <!-- Lista vacía para GTA 5 Online, el usuario la llenará -->
+            </ul>
+            <div class="add-task-container">
+                <input type="text" id="new-task-gta" placeholder="+ Añadir nueva tarea" class="new-task-input">
                 <button class="add-task-btn" aria-label="Añadir tarea">
                     <i class="fas fa-plus"></i>
                 </button>
