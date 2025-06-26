@@ -366,4 +366,97 @@ document.head.appendChild(style);
 loadStateGoT();
 loadStateGTA();
 // Mostrar por defecto la lista GoT
-showList('got'); 
+showList('got');
+
+// --- DRAG & DROP PARA REORDENAR TAREAS ---
+function enableDragAndDrop(listElement, saveFn, updateNumbersFn) {
+    let draggedItem = null;
+    let placeholder = document.createElement('li');
+    placeholder.className = 'task-item placeholder';
+    placeholder.style.background = 'rgba(150,150,255,0.15)';
+    placeholder.style.border = '2px dashed #888';
+    placeholder.style.minHeight = '40px';
+
+    listElement.addEventListener('dragstart', (e) => {
+        draggedItem = e.target;
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => {
+            draggedItem.classList.add('dragging');
+        }, 0);
+    });
+
+    listElement.addEventListener('dragend', (e) => {
+        if (draggedItem) draggedItem.classList.remove('dragging');
+        placeholder && placeholder.parentNode && placeholder.parentNode.removeChild(placeholder);
+        draggedItem = null;
+        updateNumbersFn(listElement);
+        saveFn();
+    });
+
+    listElement.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(listElement, e.clientY);
+        if (afterElement == null) {
+            listElement.appendChild(placeholder);
+        } else {
+            listElement.insertBefore(placeholder, afterElement);
+        }
+    });
+
+    listElement.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (placeholder.parentNode && draggedItem) {
+            listElement.insertBefore(draggedItem, placeholder);
+            placeholder.parentNode.removeChild(placeholder);
+        }
+    });
+
+    // Hacer los items arrastrables
+    const makeDraggable = () => {
+        listElement.querySelectorAll('.task-item').forEach(item => {
+            item.setAttribute('draggable', 'true');
+        });
+    };
+    // Llamar al inicio y cada vez que se agregue/cargue una tarea
+    const observer = new MutationObserver(makeDraggable);
+    observer.observe(listElement, { childList: true });
+    makeDraggable();
+}
+
+function getDragAfterElement(list, y) {
+    const draggableElements = [...list.querySelectorAll('.task-item:not(.dragging):not(.placeholder)')];
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: -Infinity }).element;
+}
+
+// --- FIN DRAG & DROP ---
+
+// Al final de la inicialización de cada lista:
+if (todoListGoT) {
+    enableDragAndDrop(todoListGoT, saveStateGoT, updateTaskNumbers);
+}
+if (todoListGTA) {
+    enableDragAndDrop(todoListGTA, saveStateGTA, updateTaskNumbers);
+}
+
+// Agregar estilos para el placeholder y el dragging
+const dragStyle = document.createElement('style');
+dragStyle.textContent = `
+    .task-item.dragging {
+        opacity: 0.5;
+        background: #b3c6ff;
+    }
+    .task-item.placeholder {
+        background: rgba(150,150,255,0.15) !important;
+        border: 2px dashed #888 !important;
+        min-height: 40px;
+    }
+`;
+document.head.appendChild(dragStyle); 
